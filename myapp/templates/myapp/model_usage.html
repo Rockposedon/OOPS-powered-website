@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Model Usage</title>
+</head>
+<body>
+    <h1>Model Usage</h1>
+
+    <h2>Users:</h2>
+    <ul>
+        {% for user in users %}
+            <li>{{ user.username }} - {{ user.email }}</li>
+        {% endfor %}
+    </ul>
+
+    <h2>Songs:</h2>
+    <ul>
+        {% for song in songs %}
+            <li>{{ song.title }} by {{ song.artist }} - Duration: {{ song.duration }}</li>
+        {% endfor %}
+    </ul>
+
+    <h2>Playlists:</h2>
+    <ul>
+        {% for playlist in playlists %}
+            <li>{{ playlist.name }} (User: {{ playlist.user.username }})</li>
+            <ul>
+                {% for song in playlist.songs.all %}
+                    <li>{{ song.title }} by {{ song.artist }}</li>
+                {% endfor %}
+            </ul>
+        {% endfor %}
+    </ul>
+
+</body>
+</html>

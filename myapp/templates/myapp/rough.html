@@ -1,0 +1,175 @@
+<!-- Landing page.html -->
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Music Hub</title>
+    <style>
+        body {
+            background-image: url('{% static 'myapp/music_we.jpg' %}');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center center;
+            text-align: center;
+            padding: 50px;
+        }
+
+        h1 {
+            color: white;
+        }
+
+        button {
+            margin: 10px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Your Music Hub</h1>
+        <button onclick="location.href='{% url 'register' %}'">Register</button>
+        <button onclick="location.href='{% url 'login' %}'">Login</button>
+    </header>
+</body>
+</html>
+
+
+<!-- myapp/templates/myapp/search_results.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Music Search Results</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 20px;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        li {
+            margin-bottom: 10px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+
+        li:hover {
+            background-color: #e0e0e0;
+        }
+
+        .artist {
+            font-weight: bold;
+        }
+
+        .track-name {
+            color: #007bff;
+        }
+
+        /* Style the search box */
+        #search-form {
+            margin-bottom: 20px;
+        }
+
+        /* Style the play/pause buttons */
+        .play-pause-button {
+            background-color: #4caf50;
+            color: white;
+            border: none;
+            padding: 10px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Lastfm API  Search Results</h1>
+    <p>{{ message }}</p>
+
+    <!-- Add a form for the search box -->
+    <form method="GET" action="{% url 'search_lastfm_tracks' %}" id="search-form">
+        <label for="search">Search for Songs:</label>
+        <input type="text" id="search" name="q" value="{{ request.GET.q }}">
+        <button type="submit">Search</button>
+    </form>
+
+    {% if tracks %}
+    <ul>
+        {% for track in tracks %}
+            <li>
+                <span class="track-name">{{ track.name }}</span> by <span class="artist">{{ track.artist }}</span>
+                
+                <!-- Add play/pause button with unique identifier for each track -->
+                <!-- <button class="play-pause-button" 
+                        data-player-id="player{{ forloop.counter }}"
+                        data-preview-url="{{ track.preview_url }}" 
+                        >
+                        Play/Pause
+                </button> -->
+                <button class="play-pause-button" onclick="playPause('{{ track.preview_url }}', 'player{{ forloop.counter }}')">Play/Pause</button>
+
+                <!-- Add an HTML audio element for each track with a unique identifier -->
+                <audio id="player{{ forloop.counter }}" src="{{ track.preview_url }}"></audio>
+            </li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>No results found for '{{ request.GET.q }}'.</p>
+{% endif %}
+
+   
+
+    <script>
+       document.addEventListener('DOMContentLoaded', function () {
+    var playPauseButtons = document.querySelectorAll('.play-pause-button');
+
+    playPauseButtons.forEach(function (button) {
+        button.addEventListener('click', function () {
+            var playerId = button.getAttribute('data-player-id');
+            var previewUrl = button.getAttribute('data-preview-url');
+            var audio = document.getElementById(playerId);
+
+            if (audio) {
+                if (previewUrl) {
+                    audio.src = previewUrl;
+
+                    // Preload the audio before attempting to play
+                    audio.load();
+
+                    // Play the audio
+                    audio.play().catch(function (error) {
+                        console.error('Error playing audio:', error);
+                    });
+                } else {
+                    console.error('Invalid or missing data-preview-url attribute on button:', button);
+                }
+            } else {
+                console.error('Audio element not found with ID:', playerId);
+            }
+        });
+    });
+});
+ 
+    </script>
+
+</body>
+</html>

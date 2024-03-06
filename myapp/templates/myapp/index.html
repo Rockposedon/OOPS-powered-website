@@ -1,0 +1,73 @@
+<!-- templates/index.html -->
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Music Hub</title>
+    <style>
+        body {
+            background-image: url('{% static 'myapp/music_we.jpg' %}');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center center;
+            text-align: center;
+            padding: 50px;
+            margin: 0; /* Remove default margin */
+            height: 100vh; /* Set full height of the viewport */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        header {
+            background-color: rgba(0, 0, 0, 0.5); /* Add a semi-transparent black background */
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        h1 {
+            color: white;
+            margin-bottom: 20px;
+        }
+
+        button {
+            margin: 10px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #4CAF50; /* Green background color */
+            color: white; /* White text color */
+            border: none; /* Remove borders */
+            border-radius: 5px; /* Add rounded corners */
+        }
+
+        footer {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            color: white;
+            text-align: center;
+            padding: 10px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Your Music Hub</h1>
+        <button onclick="location.href='{% url 'register' %}'">Register</button>
+        <button onclick="location.href='{% url 'login' %}'">Login</button>
+    </header>
+
+    <!-- Your content goes here -->
+
+    <footer>
+        Developed by Paritosh
+        @rokckposedon
+    </footer>
+</body>
+</html>
